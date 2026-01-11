@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: white; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #333; border-radius: 10px; }
+        button { padding: 10px 20px; margin: 10px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #5a67d8; }
+        .result { margin-top: 10px; padding: 10px; background: #2d3748; border-radius: 5px; white-space: pre-wrap; }
+        .loading { color: #ffd700; }
+        .error { color: #ff6b6b; }
+        .success { color: #51cf66; }
+    </style>
+</head>
+<body>
+    <h1>Spiritual AI API Test</h1>
+    
+    <div class="test-section">
+        <h2>Universal Chat API Test</h2>
+        <button onclick="testScriptureAPI()">Test Universal Chat</button>
+        <div id="scriptureResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Character Chat API Test</h2>
+        <button onclick="testCharacterAPI()">Test Character Chat</button>
+        <div id="characterResult" class="result"></div>
+    </div>
+
+    <script>
+        async function testScriptureAPI() {
+            const resultDiv = document.getElementById('scriptureResult');
+            resultDiv.innerHTML = '<span class="loading">Testing Universal Chat API...</span>';
+            
+            try {
+                const response = await fetch('https://pylord-gptdharma.hf.space/chat', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: "What does scripture say about forgiveness?"
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `<span class="success">✓ Universal Chat API Success!</span>\n\nResponse: ${data.reply}\n\nSources: ${JSON.stringify(data.sources, null, 2)}\n\nFull Response: ${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Universal Chat API Error:</span>\n${error.message}`;
+            }
+        }
+        
+        async function testCharacterAPI() {
+            const resultDiv = document.getElementById('characterResult');
+            resultDiv.innerHTML = '<span class="loading">Testing Character Chat API...</span>';
+            
+            try {
+                const response = await fetch('https://pylord-gptdharma.hf.space/character-chat', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        character_name: "Lord Krishna",
+                        query: "I am afraid I will fail in life"
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `<span class="success">✓ Character Chat API Success!</span>\n\nCharacter: ${data.character}\n\nResponse: ${data.reply}\n\nSources: ${JSON.stringify(data.sources, null, 2)}\n\nFull Response: ${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Character Chat API Error:</span>\n${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

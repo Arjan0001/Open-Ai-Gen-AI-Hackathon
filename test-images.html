@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Images Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #1a1a2e; 
+            color: white; 
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .image-card {
+            background: #2d3748;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .test-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffd700;
+            margin-bottom: 10px;
+        }
+        .image-name {
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .image-path {
+            font-size: 12px;
+            color: #888;
+            word-break: break-all;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+        .success {
+            color: #51cf66;
+        }
+    </style>
+</head>
+<body>
+    <h1>Character Images Test</h1>
+    <p>Testing all character images from the assets folder:</p>
+    
+    <div class="image-grid" id="imageGrid">
+        <!-- Images will be loaded here -->
+    </div>
+
+    <script>
+        const imageMap = {
+            "Lord Krishna": "assets/Lord Krishna.jpg",
+            "Patanjali": "assets/Patanjali.jpg",
+            "Rishi Vyasa": "assets/Maharshi Vyasa -Sri Swami Sivananda.jpg",
+            "Swami Vivekananda": "assets/Swami Vivekananda _ AI _ Oil Painting style.jpg",
+            "Sadhguru Jaggi Vasudev": "assets/Sadguru.jpg",
+            "Rumi": "assets/Rumi.jpg",
+            "Hazrat Ali": "assets/Hazrat Imam Ali _ Desktop Wallpaper.jpg",
+            "Imam Al-Ghazali": "assets/immam al ghazali.jpg",
+            "Khwaja Moinuddin Chishti": "assets/Khwaja Moinuddin Chishti.jpg",
+            "Jesus Christ": "assets/Jesus Christ.jpg",
+            "Mother Teresa": "assets/Mother Teressa.jpg",
+            "St. Francis of Assisi": "assets/são Francisco de Assis.jpg",
+            "St. Teresa of Avila": "assets/Santa Teresa de Jesús (Ávila).jpg"
+        };
+
+        const grid = document.getElementById('imageGrid');
+        
+        Object.entries(imageMap).forEach(([name, path]) => {
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            
+            const img = document.createElement('img');
+            img.src = path;
+            img.alt = name;
+            img.className = 'test-image';
+            
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'image-name';
+            nameDiv.textContent = name;
+            
+            const pathDiv = document.createElement('div');
+            pathDiv.className = 'image-path';
+            pathDiv.textContent = path;
+            
+            const statusDiv = document.createElement('div');
+            statusDiv.textContent = 'Loading...';
+            
+            img.onload = function() {
+                statusDiv.textContent = '✓ Loaded';
+                statusDiv.className = 'success';
+            };
+            
+            img.onerror = function() {
+                statusDiv.textContent = '✗ Failed to load';
+                statusDiv.className = 'error';
+                img.style.display = 'none';
+            };
+            
+            card.appendChild(img);
+            card.appendChild(nameDiv);
+            card.appendChild(pathDiv);
+            card.appendChild(statusDiv);
+            
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

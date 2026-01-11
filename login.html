@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritual AI Advisor - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@200;300;400&family=Noto+Naskh+Arabic:wght@200;300;400&family=Crimson+Text:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+</head>
+<body class="selection-body">
+    <div class="sacred-selection-universe">
+        <div class="cosmic-particles" id="cosmicParticles"></div>
+        <div class="sacred-geometry-bg" id="sacredGeometryBg"></div>
+    </div>
+
+    <div class="sacred-selection-container">
+        <header class="sacred-header">
+            <h1 class="sacred-main-title">Spiritual AI Advisor</h1>
+            <p class="sacred-subtitle">Enter the Sacred Realm</p>
+        </header>
+
+        <main class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-icon">🕉️</div>
+                    <h2 class="auth-title" id="authTitle">Welcome Back</h2>
+                    <p class="auth-subtitle" id="authSubtitle">Sign in to continue your spiritual journey</p>
+                </div>
+
+                <form class="auth-form" id="authForm">
+                    <div class="form-group">
+                        <label for="userId" class="form-label">User ID</label>
+                        <input type="text" id="userId" class="form-input" placeholder="Enter your user ID" value="Hackathon_Judge" required>
+                    </div>
+
+                    <div class="form-group" id="fullNameGroup" style="display: none;">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" id="fullName" class="form-input" placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password" value="Hackathon_Judge@123" required>
+                    </div>
+
+                    <div class="error-message" id="errorMessage"></div>
+
+                    <button type="submit" class="auth-btn" id="authBtn">
+                        <span class="btn-text">Sign In</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    <p class="switch-text">
+                        <span id="switchQuestion">Don't have an account?</span>
+                        <button type="button" class="switch-btn" id="switchBtn">Sign Up</button>
+                    </p>
+                </div>
+
+                <div class="judge-info">
+                    <div class="judge-credentials">
+                        <h4>Judge Access:</h4>
+                        <p><strong>User ID:</strong> Hackathon_Judge</p>
+                        <p><strong>Password:</strong> Hackathon_Judge@123</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Initialize particles and sacred geometry
+        document.addEventListener("DOMContentLoaded", () => {
+            createSelectionParticles();
+            redirectIfLoggedIn();
+        });
+
+        // Create floating particles
+        function createSelectionParticles() {
+            const container = document.getElementById('cosmicParticles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'selection-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        let isSignUp = false;
+
+        // Form elements
+        const authForm = document.getElementById('authForm');
+        const authTitle = document.getElementById('authTitle');
+        const authSubtitle = document.getElementById('authSubtitle');
+        const authBtn = document.getElementById('authBtn');
+        const switchBtn = document.getElementById('switchBtn');
+        const switchQuestion = document.getElementById('switchQuestion');
+        const fullNameGroup = document.getElementById('fullNameGroup');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Switch between login and signup
+        switchBtn.addEventListener('click', () => {
+            isSignUp = !isSignUp;
+            
+            if (isSignUp) {
+                authTitle.textContent = 'Join the Journey';
+                authSubtitle.textContent = 'Create your account to begin';
+                authBtn.querySelector('.btn-text').textContent = 'Sign Up';
+                switchQuestion.textContent = 'Already have an account?';
+                switchBtn.textContent = 'Sign In';
+                fullNameGroup.style.display = 'block';
+                document.getElementById('fullName').required = true;
+                
+                // Clear fields for sign up
+                document.getElementById('userId').value = '';
+                document.getElementById('password').value = '';
+            } else {
+                authTitle.textContent = 'Welcome Back';
+                authSubtitle.textContent = 'Sign in to continue your spiritual journey';
+                authBtn.querySelector('.btn-text').textContent = 'Sign In';
+                switchQuestion.textContent = "Don't have an account?";
+                switchBtn.textContent = 'Sign Up';
+                fullNameGroup.style.display = 'none';
+                document.getElementById('fullName').required = false;
+                
+                // Restore judge credentials for login
+                document.getElementById('userId').value = 'Hackathon_Judge';
+                document.getElementById('password').value = 'Hackathon_Judge@123';
+            }
+            
+            clearError();
+        });
+
+        // Form submission
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearError();
+
+            const userId = document.getElementById('userId').value.trim();
+            const password = document.getElementById('password').value;
+            const fullName = document.getElementById('fullName').value.trim();
+
+            if (isSignUp) {
+                if (!fullName) {
+                    showError('Please enter your full name');
+                    return;
+                }
+                
+                const result = AuthManager.signup(userId, password, fullName);
+                if (result.success) {
+                    showSuccess('Account created successfully! Please sign in.');
+                    // Switch to login mode
+                    switchBtn.click();
+                } else {
+                    showError(result.message);
+                }
+            } else {
+                const result = AuthManager.login(userId, password);
+                if (result.success) {
+                    window.location.href = 'index.html';
+                } else {
+                    showError(result.message);
+                }
+            }
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.className = 'error-message show';
+        }
+
+        function showSuccess(message) {
+            errorMessage.textContent = message;
+            errorMessage.className = 'error-message show success';
+        }
+
+        function clearError() {
+            errorMessage.className = 'error-message';
+            errorMessage.textContent = '';
+        }
+    </script>
+</body>
+</html>

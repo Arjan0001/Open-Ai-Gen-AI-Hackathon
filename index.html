@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritual AI Advisor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@200;300;400&family=Noto+Naskh+Arabic:wght@200;300;400&family=Crimson+Text:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+</head>
+<body class="selection-body">
+    <div class="sacred-selection-universe">
+        <div class="cosmic-particles" id="cosmicParticles"></div>
+        <div class="sacred-geometry-bg" id="sacredGeometryBg"></div>
+    </div>
+
+    <div class="sacred-selection-container">
+        <header class="sacred-header">
+            <h1 class="sacred-main-title" data-translate="mainTitle">Spiritual AI Advisor</h1>
+            
+        </header>
+
+        <main class="sacred-book-selection">
+            <div class="chat-mode-selection">
+                <h2 class="mode-title">Choose Your Spiritual Experience</h2>
+                <div class="mode-buttons">
+                    <button id="universalMode" class="mode-btn active" data-mode="universal">
+                        <div class="mode-icon">🕉️</div>
+                        <h3>Universal Wisdom</h3>
+                        <p>Ask questions and get answers from all sacred texts</p>
+                    </button>
+                    <button id="characterMode" class="mode-btn" data-mode="character">
+                        <div class="mode-icon">🧘</div>
+                        <h3>Character Guidance</h3>
+                        <p>Seek wisdom from spiritual masters and saints</p>
+                    </button>
+                </div>
+            </div>
+
+            <div id="characterSelection" class="selection-content">
+                <div class="characters-grid" id="charactersGrid">
+                    <!-- Characters will be loaded dynamically -->
+                </div>
+            </div>
+
+
+        </main>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Require authentication before loading the page
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!AuthManager.requireAuth()) {
+                return; // Will redirect to login
+            }
+            
+            // Show user info and logout option
+            const currentUser = AuthManager.getCurrentUser();
+            if (currentUser) {
+                addUserInfo(currentUser);
+            }
+        });
+
+        function addUserInfo(user) {
+            const header = document.querySelector('.sacred-header');
+            const userInfo = document.createElement('div');
+            userInfo.className = 'user-info';
+            userInfo.innerHTML = `
+                <div class="welcome-text">Welcome, ${user.fullName}</div>
+                <button class="logout-btn" onclick="AuthManager.logout()">
+                    <span>Logout</span>
+                </button>
+            `;
+            header.appendChild(userInfo);
+        }
+    </script>
+</body>
+</html>

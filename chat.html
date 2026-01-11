@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritual AI Advisor - Sacred Space</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@200;300;400&family=Noto+Naskh+Arabic:wght@200;300;400&family=Crimson+Text:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sacred-universe" id="sacredUniverse">
+        <div class="sacred-background-image" id="sacredBackgroundImage"></div>
+        <div class="cosmic-gradient" id="cosmicGradient"></div>
+        <div class="mandala-layer" id="mandalaLayer"></div>
+        <div class="light-particles" id="lightParticles"></div>
+        <div class="scripture-flow" id="scriptureFlow"></div>
+        <div class="sacred-geometry" id="sacredGeometry"></div>
+    </div>
+
+    <div class="sacred-tablet" id="sacredTablet">
+        <div class="divine-header">
+            <button id="backBtn" class="back-btn" onclick="window.location.href='index.html'">← Back</button>
+            <div class="sacred-title" data-translate="chatTitle">Spiritual AI Advisor</div>
+            <div class="divine-divider" id="divineDivider"></div>
+            <div class="guidance-text" data-translate="guidedBy">
+                <span id="modeText">Guided by</span> <span id="selectedBook" class="sacred-book">Loading...</span>
+            </div>
+        </div>
+
+        <div class="wisdom-chamber" id="wisdomChamber">
+            <div class="message-stream" id="messageStream">
+                <div class="message divine-message">
+                    <div class="message-essence">
+                        <p data-translate="welcomeMessage">Welcome, seeker. I am here to share the eternal wisdom of your chosen sacred text. What guidance do you seek on your spiritual journey?</p>
+                    </div>
+                    <div class="message-timestamp" data-translate="now">Now</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sacred-input-realm" id="sacredInputRealm">
+            <div class="ceremonial-input-container">
+                <textarea 
+                    id="soulInput" 
+                    placeholder="Share what weighs upon your heart..."
+                    data-translate-placeholder="placeholder"
+                    rows="1"
+                    class="soul-input"
+                ></textarea>
+                <button id="transcendBtn" class="transcend-btn">
+                    <div class="sacred-symbol" id="sacredSymbol">◈</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Require authentication before loading the chat
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!AuthManager.requireAuth()) {
+                return; // Will redirect to login
+            }
+            
+            // Show user info in the header
+            const currentUser = AuthManager.getCurrentUser();
+            if (currentUser) {
+                addUserInfoToChat(currentUser);
+            }
+        });
+
+        function addUserInfoToChat(user) {
+            const header = document.querySelector('.divine-header');
+            const userInfo = document.createElement('div');
+            userInfo.className = 'chat-user-info';
+            userInfo.innerHTML = `
+                <div class="chat-welcome">Welcome, ${user.fullName}</div>
+                <button class="chat-logout-btn" onclick="AuthManager.logout()">Logout</button>
+            `;
+            header.insertBefore(userInfo, header.firstChild);
+        }
+    </script>
+</body>
+</html>
